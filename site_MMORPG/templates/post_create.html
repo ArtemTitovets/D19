@@ -1,0 +1,14 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<h1>Создать объявление</h1>
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.text | safe }}
+    {{ form.media }}
+    {{ form.as_p }}
+    <input type="submit" value="Сохранить" />
+</form>
+<hr>
+{% endblock content %}

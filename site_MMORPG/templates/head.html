@@ -1,0 +1,59 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_tags %}
+
+
+{% block content %}
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'posts' %}">Доска объявлений "MMORPG"</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link active" aria-current="page"
+                            href="{% url 'profile' %}">Профиль</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page"
+                            href="{% url 'account_logout' %}">{{ user.username }}, Выйти</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link active" aria-current="page"
+                            href="{% url 'account_signup' %}">Регистрация</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page"
+                            href="{% url 'account_login' %}">Войти</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+<hr>
+<h1>Все посты</h1>
+    <h1>Всего публикаций: {{posts|length}}</h1>
+        {% for post_detail in posts %}
+            <div style="border:3px #000000  solid;">
+            <small class="text-muted">Дата: {{ post_detail.date_post | date:"d.m.Y" }}</small>
+            <small class="text-muted">Автор: {{ post_detail.author_post }}</small>
+            <small class="text-muted">Категория: {{ post_detail.category_post }}</small>
+            <h4>{{ post_detail.title_post }}</h4>
+            <p>{{ post_detail.text_post | safe }}</p>
+            <p align="center"><a class="main_button" href="{{ post_detail.get_absolute_url }}"
+            title="Просмотр">Просмотр</a></p>
+            </div>
+        {% endfor %}
+
+        {% if page_obj.has_previous %}
+            <a href="?{% url_replace page=1 %}">1</a>
+            {% if page_obj.previous_page_number != 1 %}
+                ...
+                <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+            {% endif %}
+        {% endif %}
+        {{ page_obj.number }}
+        {% if page_obj.has_next %}
+            <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+            ...
+            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+{% endblock content %}

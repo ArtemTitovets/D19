@@ -1,0 +1,12 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+    <h1>Комментарий</h1>
+    <hr>
+    <small class="fw-bold">Дата: {{ comment_detail.date_comment | date:"d.m.Y" }}</small>
+    <small class="text-muted">Автор: {{ comment_detail.author_comment }}</small>
+    <h4><b>{{ comment_detail.text_comment | linebreaks | safe }}</b></h4>
+
+    <div align="center"><a class="main_button" href="{% url 'comments' %}" title="Вернуться">Вернуться</a></div>
+    <hr>
+{% endblock content %}

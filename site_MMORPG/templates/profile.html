@@ -1,0 +1,16 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Profil
+{% endblock title %}
+
+{% block content %}
+    <h1>Личный кабинет</h1>
+    <hr>
+    <div align="center"><a class="main_button" href="{% url 'posts' %}" title="Все объявления">Все посты</a></div>
+    <br>
+    <div align="center"><a class="main_button_create" href="{% url 'post_create' %}" title="Создать объявление">Создать пост</a></div>
+    <br>
+    <div align="center"><a class="main_button_comments" href="{% url 'comments' %}" title="Мои комментарии">Мои комментарии</a></div>
+    <hr>
+{% endblock content %}

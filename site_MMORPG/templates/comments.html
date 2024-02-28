@@ -1,0 +1,45 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_tags %}
+
+{% block content %}
+    <h1>Мои комментарии</h1>
+    <hr>
+    {% if comments %}
+        {% for comment in comments %}
+            {% if comment.confirmation_comment is False %}
+                <small class="fw-bold">Дата: {{ comment.date_comment | date:"d.m.Y" }}</small>
+                <small class="text-muted">Автор: {{ comment.author_comment }}</small>
+                <p>Комментарий к {{ comment.post_comment | linebreaks | safe }}</p>
+                <br>
+                <div align="center"><a class="main_button_confirm" href="{% url 'confirm_comment' pk=comment.pk %}" title="Принять">Принять</a></div>
+                <br>
+                <div align="center"><a class="main_button_reject" href="{% url 'reject_comment' pk=comment.pk %}" title="Отклонить">Отклонить</a></div>
+                <br>
+            {% else %}
+                <small class="fw-bold">Дата: {{ comment.date_comment | date:"d.m.Y" }}</small>
+                <small class="text-muted">Автор: {{ comment.author_comment }}</small>
+                <p>Комментарий к {{ comment.post_comment | linebreaks | safe }} <b>{{ comment.text_comment | linebreaks | truncatechars:130 | safe }}</b></p>
+                <div align="center"><a class="main_button" href="{{ comment.get_absolute_url }}" title="Прочитать">Прочитать</a></div>
+            {% endif %}
+            <hr>
+        {% endfor %}
+    {% endif %}
+
+    {% if page_obj.has_previous %}
+       <a href="?{% url_replace page=1 %}">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+    {% endif %}
+
+    {{ page_obj.number }}
+
+    {% if page_obj.has_next %}
+       <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+    {% endif %}
+{% endblock content %}
